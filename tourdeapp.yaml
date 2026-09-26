@@ -1,0 +1,21 @@
+# $schema: https://tourde.cloud/api/v2/schema
+
+exposedPort: 80
+
+containers:
+  - name: web
+    image: registry.tourde.cloud/v_i_b_e/web
+    port: 3000
+
+  - name: server
+    image: registry.tourde.cloud/v_i_b_e/server
+    port: 8080
+
+build:
+  - name: web
+    context: ./frontend
+    dockerfile: ./frontend/Dockerfile
+
+  - name: server
+    context: ./backend
+    dockerfile: ./backend/Dockerfile
