@@ -6,6 +6,8 @@ containers:
   - name: web
     image: registry.tourde.cloud/v_i_b_e/web
     port: 3000
+    env:
+      BACKEND_URL: http://localhost:8000
 
   - name: server
     image: registry.tourde.cloud/v_i_b_e/server
