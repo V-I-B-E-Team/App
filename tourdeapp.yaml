@@ -14,7 +14,7 @@ containers:
     port: 8000
 
   - name: caddy
-    image: registry.tourde.cloud/<team-slug>/caddy
+    image: registry.tourde.cloud/v_i_b_e/caddy
     port: 80
 
 build:
