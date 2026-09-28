@@ -1,6 +1,6 @@
 # $schema: https://tourde.cloud/api/v2/schema
 
-exposedPort: 3000
+exposedPort: 80
 
 containers:
   - name: web
@@ -13,6 +13,10 @@ containers:
     image: registry.tourde.cloud/v_i_b_e/server
     port: 8000
 
+  - name: caddy
+    image: registry.tourde.cloud/<team-slug>/caddy
+    port: 80
+
 build:
   - name: web
     context: ./frontend
@@ -21,3 +25,7 @@ build:
   - name: server
     context: ./backend
     dockerfile: ./backend/Dockerfile
+
+  - name: caddy
+    context: ./caddy
+    dockerfile: ./caddy/Dockerfile
