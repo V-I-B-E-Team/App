@@ -1,18 +1,34 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 
-cd ./backend/
-cargo build
+set -Eeuo pipefail
 
-cargo run &
-BACKEND_PID=$!
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SERVER_CONTAINER="tourde-server-api-local"
 
 cleanup() {
-  kill "$BACKEND_PID" 2>/dev/null
+  docker rm -f "$SERVER_CONTAINER" >/dev/null 2>&1 || true
 }
 
 trap cleanup EXIT INT TERM
 
-cd ../frontend/
-bun i
+cleanup
 
-bun generate-api
+docker build --network host -t tourde-server:local "$ROOT_DIR/backend"
+docker run -d \
+  --name "$SERVER_CONTAINER" \
+  --network host \
+  -e DATABASE_URL=mysql://app:app@localhost:3306/app \
+  tourde-server:local >/dev/null
+
+until curl --fail --silent http://localhost:8000/api/v1/health >/dev/null; do
+  sleep 1
+done
+
+docker run --rm \
+  --network host \
+  --user "$(id -u):$(id -g)" \
+  -e HOME=/tmp \
+  -v "$ROOT_DIR/frontend:/app" \
+  -w /app \
+  oven/bun:1.4.2 \
+  sh -c 'bun install --frozen-lockfile && bun run generate-api'
