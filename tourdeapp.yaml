@@ -12,8 +12,6 @@ containers:
   - name: server
     image: registry.tourde.cloud/v_i_b_e/server
     port: 8000
-    env:
-      DATABASE_URL: mysql://app:app@localhost:3306/app
 
   - name: database
     image: mongo
