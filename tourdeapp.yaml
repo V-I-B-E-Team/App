@@ -7,13 +7,13 @@ containers:
     image: registry.tourde.cloud/v_i_b_e/web
     port: 3000
     env:
-      BACKEND_URL: http://server:8000
+      BACKEND_URL: http://localhost:8000
 
   - name: server
     image: registry.tourde.cloud/v_i_b_e/server
     port: 8000
     env:
-      MONGODB_URI: mongodb://root:procMIkradesHESLOzmrde@database:27017/?authSource=admin
+      MONGODB_URI: mongodb://root:procMIkradesHESLOzmrde@localhost:27017/?authSource=admin
 
   - name: database
     image: mongo
@@ -27,8 +27,8 @@ containers:
     image: registry.tourde.cloud/v_i_b_e/caddy
     port: 80
     env:
-      BACKEND_UPSTREAM: http://server:8000
-      WEB_UPSTREAM: http://web:3000
+      BACKEND_UPSTREAM: http://localhost:8000
+      WEB_UPSTREAM: http://localhost:3000
 
 build:
   - name: web
