@@ -26,6 +26,9 @@ containers:
   - name: caddy
     image: registry.tourde.cloud/v_i_b_e/caddy
     port: 80
+    env:
+      BACKEND_UPSTREAM: http://server:8000
+      WEB_UPSTREAM: http://web:3000
 
 build:
   - name: web

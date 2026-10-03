@@ -52,4 +52,6 @@ docker run -d \
 docker run \
   --name "$CADDY_CONTAINER" \
   --network host \
+  -e BACKEND_UPSTREAM=http://localhost:8000 \
+  -e WEB_UPSTREAM=http://localhost:3000 \
   tourde-caddy:local
