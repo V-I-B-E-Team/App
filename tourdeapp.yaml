@@ -13,12 +13,12 @@ containers:
     image: registry.tourde.cloud/v_i_b_e/server
     port: 8000
     env:
-      MONGODB_URI: mongodb://root:procMIkradesHESLOzmrde@database:6767/?authSource=admin
+      MONGODB_URI: mongodb://root:procMIkradesHESLOzmrde@database:27017/?authSource=admin
 
   - name: database
     image: mongo
     tag: "4.4-focal"
-    port: 6767
+    port: 27017
     env:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: procMIkradesHESLOzmrde
