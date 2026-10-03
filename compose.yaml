@@ -1,0 +1,53 @@
+services:
+  database:
+    image: mongo:latest
+    command: ["mongod", "--bind_ip_all"]
+    ports:
+      - "6767:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: procMIkradesHESLOzmrde
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "mongosh --quiet --host localhost --port 27017 --username root --password procMIkradesHESLOzmrde --authenticationDatabase admin --eval 'db.runCommand({ ping: 1 }).ok' | grep -q 1",
+        ]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+
+  server:
+    build:
+      context: ./backend
+      target: debug
+    ports:
+      - "8000:8000"
+    environment:
+      MONGODB_URI: mongodb://root:procMIkradesHESLOzmrde@database:27017/?authSource=admin
+    depends_on:
+      database:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./frontend
+      target: debug
+    ports:
+      - "3000:3000"
+    environment:
+      BACKEND_URL: http://server:8000
+    depends_on:
+      - server
+
+  caddy:
+    build:
+      context: ./caddy
+    ports:
+      - "80:80"
+    environment:
+      BACKEND_UPSTREAM: http://server:8000
+      WEB_UPSTREAM: http://web:3000
+    depends_on:
+      - server
+      - web
