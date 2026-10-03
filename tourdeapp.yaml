@@ -15,7 +15,7 @@ containers:
 
   - name: database
     image: mongo
-    tag: "latest"
+    tag: "4.4-focal"
     port: 6767
     env:
       MONGO_INITDB_ROOT_USERNAME: root
